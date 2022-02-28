@@ -4,6 +4,7 @@ import Image from './asset/images/add-grey.svg';
 import Image1 from './asset/images/3dots-grey.svg';
 import Image2 from './asset/images/trash.svg';
 import statusCheckBox from './asset/modules/statusCheck.js';
+import update from './asset/modules/update.js';
 
 const render = `<a href="#"><img src="${Image}" alt="img"></a>`;
 const addButton = document.getElementById('add-button');
@@ -21,7 +22,7 @@ const sortIndex = () => {
     description: item.description,
     completed: item.completed,
   }));
-  localStorage.setItem('tasks', JSON.stringify(ListContent));
+  update(ListContent);
 };
 
 // update local storage
@@ -29,7 +30,7 @@ const updateLocalStorage = (arr, item) => {
   const li = item.closest('li');
   const index = Array.from(arr).indexOf(li);
   ListContent[index].description = item.value;
-  localStorage.setItem('tasks', JSON.stringify(ListContent));
+  update(ListContent);
 };
 
 // input validation
@@ -63,7 +64,7 @@ const todoEdit = (event) => {
     const lists = document.querySelector('#ulList').children;
     const indexList = Array.from(lists).indexOf(event.target.parentNode);
     ListContent.splice(indexList, 1);
-    localStorage.setItem('tasks', JSON.stringify(ListContent));
+    update(ListContent);
     event.target.parentNode.remove();
     sortIndex();
   }
@@ -104,7 +105,7 @@ const addtodo = (event) => {
   const getCheckBoxes = document.querySelectorAll('.checkbox');
   const checkBoxIndex = getCheckBoxes.length - 1;
   getCheckBoxes[checkBoxIndex].addEventListener('change', (event) => statusCheckBox(event, ListContent));
-  localStorage.setItem('tasks', JSON.stringify(ListContent));
+  update(ListContent);
   document.querySelector('.todo-input').value = null;
 };
 
@@ -148,7 +149,7 @@ const showTodoList = () => {
   const grabList = JSON.parse(localStorage.getItem('tasks'));
   if (grabList === null) return;
   grabList.forEach((item) => addingTodos(item));
-  localStorage.setItem('tasks', JSON.stringify(ListContent));
+  update(ListContent);
 };
 
 const clearAll = () => {
